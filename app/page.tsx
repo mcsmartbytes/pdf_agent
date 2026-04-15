@@ -14,6 +14,8 @@ export default function HomePage() {
   const [error, setError] = useState<string | null>(null)
   const [saving, setSaving] = useState(false)
   const [saved, setSaved] = useState(false)
+  const [startPage, setStartPage] = useState('')
+  const [endPage, setEndPage] = useState('')
 
   const handleFile = useCallback((f: File) => {
     setFile(f)
@@ -34,6 +36,8 @@ export default function HomePage() {
     try {
       const form = new FormData()
       form.append('file', file)
+      if (startPage) form.append('startPage', startPage)
+      if (endPage) form.append('endPage', endPage)
 
       const res = await fetch('/api/parse', { method: 'POST', body: form })
 
@@ -87,6 +91,39 @@ export default function HomePage() {
       </div>
 
       <PDFUploader onFile={handleFile} disabled={status === 'processing'} />
+
+      {file && (
+        <div className="bg-gray-900 rounded-xl p-5 border border-gray-800 space-y-3">
+          <p className="text-gray-400 text-sm font-medium">Page Range <span className="text-gray-600">(optional — leave blank to process all pages)</span></p>
+          <div className="flex items-center gap-3">
+            <div className="flex-1">
+              <label className="block text-xs text-gray-500 mb-1">From page</label>
+              <input
+                type="number"
+                min="1"
+                value={startPage}
+                onChange={(e) => setStartPage(e.target.value)}
+                placeholder="1"
+                disabled={status === 'processing'}
+                className="w-full bg-gray-800 border border-gray-700 rounded-lg px-3 py-2 text-gray-200 text-sm placeholder-gray-600 focus:outline-none focus:border-blue-500"
+              />
+            </div>
+            <div className="pt-4 text-gray-600">—</div>
+            <div className="flex-1">
+              <label className="block text-xs text-gray-500 mb-1">To page</label>
+              <input
+                type="number"
+                min="1"
+                value={endPage}
+                onChange={(e) => setEndPage(e.target.value)}
+                placeholder="10"
+                disabled={status === 'processing'}
+                className="w-full bg-gray-800 border border-gray-700 rounded-lg px-3 py-2 text-gray-200 text-sm placeholder-gray-600 focus:outline-none focus:border-blue-500"
+              />
+            </div>
+          </div>
+        </div>
+      )}
 
       {file && status !== 'processing' && (
         <button
