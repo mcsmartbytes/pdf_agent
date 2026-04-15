@@ -36,7 +36,14 @@ export default function HomePage() {
       form.append('file', file)
 
       const res = await fetch('/api/parse', { method: 'POST', body: form })
-      const json = await res.json()
+
+      const text = await res.text()
+      let json: { success?: boolean; error?: string; data?: ExtractedDocument }
+      try {
+        json = JSON.parse(text)
+      } catch {
+        throw new Error(`Server error: ${text.slice(0, 300)}`)
+      }
 
       if (!res.ok || !json.success) {
         throw new Error(json.error ?? 'Unknown error from server')
