@@ -49,7 +49,7 @@ export default function HomePage() {
         throw new Error(json.error ?? 'Unknown error from server')
       }
 
-      setResult(json.data)
+      setResult(json.data ?? null)
       setStatus('done')
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Something went wrong')
