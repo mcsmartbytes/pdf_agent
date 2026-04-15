@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { getDocumentById } from '@/lib/supabase'
+import { getDocumentById } from '@/lib/database'
 import ResultsView from '@/components/ResultsView'
 
 interface Props {

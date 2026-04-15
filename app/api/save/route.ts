@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { saveDocument } from '@/lib/supabase'
+import { saveDocument } from '@/lib/database'
 import type { ExtractedDocument } from '@/types'
 
 export async function POST(req: NextRequest) {

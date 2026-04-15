@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { getAllDocuments } from '@/lib/supabase'
+import { getAllDocuments } from '@/lib/database'
 import DocumentsTable from '@/components/DocumentsTable'
 import type { DocumentRecord } from '@/types'
 
